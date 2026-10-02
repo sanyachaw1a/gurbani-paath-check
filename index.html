@@ -67,8 +67,6 @@ details.how li{margin-block:8px}
 .progress{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.1rem}
 .meter{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--ok);width:0}
-.check{display:flex;gap:10px;align-items:center;min-height:44px;font-weight:600}
-.check input{width:26px;height:26px;accent-color:var(--navy)}
 
 .list{display:flex;flex-direction:column;gap:18px}
 .row{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
@@ -198,7 +196,6 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
     <div class="sticky">
       <span class="progress" id="progress"></span>
       <div class="meter"><i id="meter"></i></div>
-      <label class="check"><input type="checkbox" id="only-open"> Show only the lines I have not done</label>
     </div>
 
     <div class="list" id="list"></div>
@@ -426,10 +423,9 @@ function renderProgress(){
 }
 function renderList(){
   const all = pageRows(sec(), curPg()), sid = state.sec;
-  const html = all.map((r, i) => (state.open && answered(ans(sid, r.n))) ? '' : rowHtml(r, i + 1, all.length)).join('');
-  $('list').innerHTML = html || '<p class="empty">' + (all.length ? 'You have done every line on this page.' : 'All three apps match on every line of this page. There is nothing to check here.') + '</p>';
+  $('list').innerHTML = all.map((r, i) => rowHtml(r, i + 1, all.length)).join('') || '<p class="empty">All three apps match on every line of this page. There is nothing to check here.</p>';
 }
-function renderAll(){ renderTabs(); renderPages(); renderProgress(); renderList(); $('only-open').checked = !!state.open; }
+function renderAll(){ renderTabs(); renderPages(); renderProgress(); renderList(); }
 function goPage(i){
   state.pg[state.sec] = Math.max(0, Math.min(sec().pages.length - 1, i)); saveView(); renderAll();
   try { history.replaceState(null, '', '#' + HASH[state.sec] + '-' + (curPg() + 1)); } catch (e) {}
@@ -446,7 +442,6 @@ $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-sec
 $('page-select').addEventListener('change', e => goPage(+e.target.value));
 $('prev').addEventListener('click', () => goPage(curPg() - 1));
 $('next').addEventListener('click', () => goPage(curPg() + 1));
-$('only-open').addEventListener('change', e => { state.open = e.target.checked; saveView(); renderList(); });
 $('fs-down').addEventListener('click', () => { state.fs = Math.max(1.15, Math.round(((state.fs || 1.55) - 0.2) * 100) / 100); applySize(); saveView(); });
 $('fs-up').addEventListener('click', () => { state.fs = Math.min(2.75, Math.round(((state.fs || 1.55) + 0.2) * 100) / 100); applySize(); saveView(); });
 $('list').addEventListener('click', e => {

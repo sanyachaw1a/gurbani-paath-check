@@ -147,12 +147,12 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
       <li>Compare the three versions. The parts that differ are highlighted.</li>
       <li>Tap every version that is wrong. You can pick more than one.</li>
       <li>If the difference does not make any version wrong, choose <b>None is wrong</b>. If you cannot tell, choose <b>Not sure</b> and we will review it.</li>
-      <li>Go to the next page when the page is done. When you finish, download your answers and send the file back, unless the page says they are saved online.</li>
+      <li id="how-finish">Go to the next page when the page is done. When you finish, download your answers and send the file back, unless the page says they are saved online.</li>
     </ol>
     <ul>
       <li>The Sanchee has no vishraam marks. For a vishraam difference, go by the santhya you trust, or choose Not sure.</li>
       <li>Dasam Bani lines in Rehraas Sahib are not in the SGGS Sanchee. Compare them with your Gutka.</li>
-      <li>Your answers are kept as you go. The line under your name says whether they are saved online or only on this device. If only on this device, use the same phone or computer until you have downloaded them.</li>
+      <li id="how-saved">Your answers are kept as you go. The line under your name says whether they are saved online or only on this device. If only on this device, use the same phone or computer until you have downloaded them.</li>
     </ul>
     <div class="legend">
       <span><span class="w d">ਸ਼ਬਦ</span> word differs between versions</span>
@@ -168,7 +168,7 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
       <div class="tabs" role="tablist" id="tabs"></div>
       <select id="page-select" aria-label="Choose a page"></select>
     </div>
-    <div class="bar-row">
+    <div class="bar-row" id="dl-row">
       <button class="btn" id="dl-pdf" type="button">Download answers (PDF)</button>
       <button class="btn ghost" id="dl-csv" type="button">Download spreadsheet (CSV)</button>
     </div>
@@ -436,7 +436,10 @@ $('list').addEventListener('input', e => {
 });
 $('tester-name').value = state.name || '';
 $('tester-name').addEventListener('input', e => { state.name = e.target.value; if (SHEET_URL) { if (sheetOn) { sheetOn = false; setSaveNote('need'); } saveView(); } else save(); });
-if (SHEET_URL) {
+if (SHEET_URL) {                                        // answers go to the sheet, so there is no file to send back
+  $('dl-row').hidden = true; $('status').hidden = true;
+  $('how-finish').textContent = 'Go to the next page when the page is done. Your answers save online as you go, so there is nothing to send when you finish.';
+  $('how-saved').textContent = 'The line under your name shows whether your answers are saved online. If it says they are not, check your connection and press Start again.';
   $('sheet-gate').hidden = false;
   $('access-code').value = state.code || '';
   $('access-code').addEventListener('input', e => { state.code = e.target.value; if (sheetOn) { sheetOn = false; setSaveNote('need'); } saveView(); });

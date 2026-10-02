@@ -97,8 +97,6 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
 .w.d{background:var(--diff);border-bottom:2px solid var(--kesri);border-radius:3px;padding-inline:2px}
 .w.m{color:var(--pause-main);font-weight:600}
 .w.l{color:var(--pause-light);font-weight:600}
-.w.pd{outline:2px solid var(--kesri);outline-offset:1px;border-radius:3px;padding-inline:2px}
-.w.px{border-bottom:2px dashed var(--kesri)}
 .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .acts button{border:1px solid var(--line);background:transparent;border-radius:6px;padding:5px 11px;font-size:.92rem;font-weight:600}
 .acts button[aria-pressed="true"]{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
@@ -158,8 +156,6 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
       <span><span class="w d">ਸ਼ਬਦ</span> word differs between versions</span>
       <span><span class="w m">ਸ਼ਬਦ</span> main vishraam after this word</span>
       <span><span class="w l">ਸ਼ਬਦ</span> light vishraam (jamki) after this word</span>
-      <span><span class="w m pd">ਸ਼ਬਦ</span> vishraam the other versions do not share</span>
-      <span><span class="w px">ਸ਼ਬਦ</span> others pause here, this one does not</span>
     </div>
   </details>
 
@@ -341,8 +337,8 @@ async function initCloud(){
 /* ---------- rendering ---------- */
 function tokHtml(toks){
   return toks.map(t => {
-    const cls = 'w' + (t[2] ? ' d' : '') + (t[1] ? ' ' + t[1] : '') + (t[3] === 1 ? ' pd' : t[3] === 2 ? ' px' : '');
-    const tip = t[1] ? (t[1] === 'm' ? 'main vishraam' : 'light vishraam') : t[3] === 2 ? 'other versions pause here' : '';
+    const cls = 'w' + (t[2] ? ' d' : '') + (t[1] ? ' ' + t[1] : '');
+    const tip = t[1] ? (t[1] === 'm' ? 'main vishraam' : 'light vishraam') : '';
     return '<span class="' + cls + '"' + (tip ? ' title="' + tip + '"' : '') + '>' + esc(t[0]) + '</span>';
   }).join(' ');
 }

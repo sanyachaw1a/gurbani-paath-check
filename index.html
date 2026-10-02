@@ -123,7 +123,7 @@ table.rv th,table.rv td{text-align:left;padding:4px 14px 4px 0;border-bottom:1px
     <input id="tester-name" type="text" autocomplete="name" placeholder="So we know whose answers these are">
     <span class="gate" id="sheet-gate" hidden>
       <label for="access-code">Access code</label>
-      <input id="access-code" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="From Sanya or Cici">
+      <input id="access-code" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="From the NGSK team">
       <button class="btn" id="start" type="button">Start</button>
     </span>
   </div>
@@ -236,7 +236,7 @@ function doneCount(rows, sid){ return rows.filter(r => answered(ans(sid, r.n))).
 /* ---------- saving: this browser always, the shared store when this viewer may write to it ---------- */
 let cloud = null, cloudUid = null, saveTimer = null, pushTimer = null, pushing = false, dirty = false;
 const NOTES = {
-  cloud: 'Saved online — Sanya and Cici can see your answers.',
+  cloud: 'Saved online — the NGSK team can see your answers.',
   saving: 'Saving…',
   local: 'Saved on this device only. Download your answers when you finish and send the file.',
   need: 'Type your name and the access code, then press Start. Your answers will then save online as you go.',
@@ -480,7 +480,7 @@ async function run(btn, label, job, fallbackText, skipChecks){
     if (!answeredRows().length) { setStatus('You have not answered any lines yet.', true); return; }
   }
   btn.disabled = true; setStatus('Preparing ' + label + '…');
-  try { await job(); setStatus('Saved ' + label + '.' + (skipChecks ? '' : ' Send that file back to Sanya or Cici.')); }
+  try { await job(); setStatus('Saved ' + label + '.' + (skipChecks ? '' : ' Send that file back to the NGSK team.')); }
   catch (e) {
     const code = e && e.code;
     if (code === 'declined') setStatus('Download cancelled.');
@@ -494,7 +494,7 @@ $('dl-csv').addEventListener('click', e => run(e.currentTarget, 'the spreadsheet
 $('dl-pdf').addEventListener('click', e => run(e.currentTarget, 'the PDF', async () => { const blob = await buildPdf(); await deliver(fileStem() + '.pdf', blob, 'application/pdf'); }, () => csvText(mine(), true)));
 $('copy').addEventListener('click', async () => {
   const t = $('fallback-text');
-  try { await navigator.clipboard.writeText(t.value); setStatus('Copied. Paste it into a message to Sanya or Cici.'); }
+  try { await navigator.clipboard.writeText(t.value); setStatus('Copied. Paste it into a message to the NGSK team.'); }
   catch (e) { t.focus(); t.select(); setStatus('Select all the text in the box and copy it.'); }
 });
 
